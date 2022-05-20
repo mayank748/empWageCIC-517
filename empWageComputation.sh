@@ -15,16 +15,18 @@ echo "Welcome to emp wage"
 randomValue=$((RANDOM))
 presentAbsent=$(($randomValue%3))
 
-if [ $presentAbsent -eq $IS_PRESENT ]
-then
-        echo "Emp present"
-        totalWageForDay=$(($TOTAL_WORKING_HOUR*$WAGE_PER_HOUR_FULL_DAY))
-elif [ $presentAbsent -eq $IS_PARTTIME ]
-then 
-        echo "Emp partTime"
-        totalWageForDay=$(($TOTAL_WORKING_HOUR_PART_TIME*$WAGE_PER_HOUR_FULL_DAY))
-else
-	echo "Emp Absent"
-fi
+case $presentAbsent in
+	$IS_PRESENT)
+	        echo "Emp present"
+	        totalWageForDay=$(($TOTAL_WORKING_HOUR*$WAGE_PER_HOUR_FULL_DAY));;
+	$IS_ABSENT)
+	        echo "Emp partTime"
+	        totalWageForDay=$(($TOTAL_WORKING_HOUR_PART_TIME*$WAGE_PER_HOUR_FULL_DAY));;
+	$IS_PARTTIME)
+	        echo "Emp partTime"
+	        totalWageForDay=$(($TOTAL_WORKING_HOUR_PART_TIME*$WAGE_PER_HOUR_FULL_DAY));;
+	*)
+		echo "Work response"
+esac
 
 echo $totalWageForDay
