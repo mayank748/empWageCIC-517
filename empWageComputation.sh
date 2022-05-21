@@ -1,6 +1,6 @@
 #! /bin/bash -x
 
-declare -a dailyWage
+declare -A dailyWage
 
 IS_PRESENT=1
 IS_ABSENT=0
@@ -64,4 +64,6 @@ dailyWage[$NUMBER_OF_DAYS]='{ '$totalWagePerMonth' : '$totalWageForDay' }'
 echo "******************************day end**********************************"
 done
 echo $totalWagePerMonth
+echo ${!dailyWage[@]}
+
 echo ${dailyWage[@]}
