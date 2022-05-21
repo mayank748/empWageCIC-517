@@ -11,23 +11,38 @@ WAGE_PER_HOUR_FULL_DAY=20
 totalWageForDay=0
 NUMBER_OF_DAYS=20
 totalWagePerMonth=0
+TOTAL_WORKING_HOUR_IN_MONTH=100
 
 echo "Welcome to emp wage"
 
-while [ $NUMBER_OF_DAYS -ne 0 ]
+while [ $NUMBER_OF_DAYS -ne 0 -a $TOTAL_WORKING_HOUR_IN_MONTH -gt 0 ]
 do
+echo "******************************new day**********************************"
 randomValue=$((RANDOM))
 presentAbsent=$(($randomValue%3))
+
+if [ $TOTAL_WORKING_HOUR_IN_MONTH -lt $TOTAL_WORKING_HOUR -o $TOTAL_WORKING_HOUR_IN_MONTH -lt $TOTAL_WORKING_HOUR_PART_TIME ]
+then
+	if [ $presentAbsent -eq $IS_PRESENT ]
+	then
+		TOTAL_WORKING_HOUR=$(($TOTAL_WORKING_HOUR_IN_MONTH))
+	elif [ $presentAbsent -eq $IS_PARTTIME ]
+	then
+		TOTAL_WORKING_HOUR_PART_TIME=$(($TOTAL_WORKING_HOUR_IN_MONTH))
+	fi
+fi
 
 case $presentAbsent in
 	$IS_PRESENT)
 	        echo "Emp present"
+		TOTAL_WORKING_HOUR_IN_MONTH=$(($TOTAL_WORKING_HOUR_IN_MONTH-$TOTAL_WORKING_HOUR))
 	        totalWageForDay=$(($TOTAL_WORKING_HOUR*$WAGE_PER_HOUR_FULL_DAY));;
 	$IS_ABSENT)
 	        echo "Emp absent"
 	        totalWageForDay=0;;
 	$IS_PARTTIME)
 	        echo "Emp partTime"
+		TOTAL_WORKING_HOUR_IN_MONTH=$(($TOTAL_WORKING_HOUR_IN_MONTH-$TOTAL_WORKING_HOUR_PART_TIME))
 	        totalWageForDay=$(($TOTAL_WORKING_HOUR_PART_TIME*$WAGE_PER_HOUR_FULL_DAY));;
 	*)
 		echo "Work response"
@@ -35,5 +50,6 @@ esac
 
 totalWagePerMonth=$(( $totalWagePerMonth + $totalWageForDay ))
 ((NUMBER_OF_DAYS--))
+echo "******************************day end**********************************"
 done
 echo $totalWagePerMonth
