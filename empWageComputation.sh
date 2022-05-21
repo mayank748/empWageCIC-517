@@ -1,5 +1,6 @@
 #! /bin/bash -x
 
+declare -a dailyWage
 
 IS_PRESENT=1
 IS_ABSENT=0
@@ -58,7 +59,9 @@ case $presentAbsent in
 esac
 
 totalWagePerMonth=$(( $totalWagePerMonth + $totalWageForDay ))
+dailyWage[$NUMBER_OF_DAYS]='{ '$totalWagePerMonth' : '$totalWageForDay' }'
 ((NUMBER_OF_DAYS--))
 echo "******************************day end**********************************"
 done
 echo $totalWagePerMonth
+echo ${dailyWage[@]}
