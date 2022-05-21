@@ -1,5 +1,6 @@
 #! /bin/bash -x
 
+
 IS_PRESENT=1
 IS_ABSENT=0
 IS_PARTTIME=2
@@ -12,6 +13,14 @@ totalWageForDay=0
 NUMBER_OF_DAYS=20
 totalWagePerMonth=0
 TOTAL_WORKING_HOUR_IN_MONTH=100
+
+
+function calculateWage(){
+	local workingHour=$1
+	local wagePerHour=$2
+	echo $(($workingHour*$wagePerHour))
+}
+
 
 echo "Welcome to emp wage"
 
@@ -36,14 +45,14 @@ case $presentAbsent in
 	$IS_PRESENT)
 	        echo "Emp present"
 		TOTAL_WORKING_HOUR_IN_MONTH=$(($TOTAL_WORKING_HOUR_IN_MONTH-$TOTAL_WORKING_HOUR))
-	        totalWageForDay=$(($TOTAL_WORKING_HOUR*$WAGE_PER_HOUR_FULL_DAY));;
+	        totalWageForDay=`calculateWage $TOTAL_WORKING_HOUR $WAGE_PER_HOUR_FULL_DAY` ;;
 	$IS_ABSENT)
 	        echo "Emp absent"
 	        totalWageForDay=0;;
 	$IS_PARTTIME)
 	        echo "Emp partTime"
 		TOTAL_WORKING_HOUR_IN_MONTH=$(($TOTAL_WORKING_HOUR_IN_MONTH-$TOTAL_WORKING_HOUR_PART_TIME))
-	        totalWageForDay=$(($TOTAL_WORKING_HOUR_PART_TIME*$WAGE_PER_HOUR_FULL_DAY));;
+	        totalWageForDay=`calculateWage $TOTAL_WORKING_HOUR_PART_TIME $WAGE_PER_HOUR_FULL_DAY` ;;
 	*)
 		echo "Work response"
 esac
